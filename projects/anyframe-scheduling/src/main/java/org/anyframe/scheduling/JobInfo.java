@@ -19,7 +19,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 import org.quartz.Scheduler;
-import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * This JobInfo class contains attributes for quartz job and trigger information
@@ -28,11 +27,9 @@ import org.springframework.format.annotation.DateTimeFormat;
  * 
  * @author Sujeong Lee
  */
-public class JobInfo implements Serializable {
+public class JobInfo implements Serializable { 
 
 	private static final long serialVersionUID = 1L;
-
-	private static final String DATEFORMAT = "yyyy-MM-dd HH:mm:ss.SSS";
 
 	private String jobName;
 	private String jobGroup = Scheduler.DEFAULT_GROUP;
@@ -41,15 +38,13 @@ public class JobInfo implements Serializable {
 	private String jobSchedule;
 	private String triggerName;
 
-	@DateTimeFormat(pattern = DATEFORMAT)
-	private Date startDate = new Date();
+	private Date startDate;
 
-	@DateTimeFormat(pattern = DATEFORMAT)
 	private Date endDate;
 
 	String description = "";
 
-	private boolean isInXml = false;
+	private boolean inXml = false;
 
 	private String flagScheduleType; // simple, cron
 
@@ -60,12 +55,13 @@ public class JobInfo implements Serializable {
 	/**
 	 * Set a job name value.
 	 * 
-	 * @param jobName The value of job name
+	 * @param jobName
+	 *            The value of job name
 	 */
 	public void setJobName(String jobName) {
 		this.jobName = jobName;
 	}
-	
+
 	/**
 	 * Get a job group value.
 	 * 
@@ -74,11 +70,12 @@ public class JobInfo implements Serializable {
 	public String getJobGroup() {
 		return jobGroup;
 	}
-	
+
 	/**
 	 * Set a job group value.
 	 * 
-	 * @param jobGroup The value of job group. Default = DEFAULT
+	 * @param jobGroup
+	 *            The value of job group. Default = DEFAULT
 	 */
 	public void setJobGroup(String jobGroup) {
 		this.jobGroup = jobGroup;
@@ -96,7 +93,8 @@ public class JobInfo implements Serializable {
 	/**
 	 * Set a job target class value.
 	 * 
-	 * @param jobTarget The value of job target class
+	 * @param jobTarget
+	 *            The value of job target class
 	 */
 	public void setJobTarget(String jobTarget) {
 		this.jobTarget = jobTarget;
@@ -114,7 +112,8 @@ public class JobInfo implements Serializable {
 	/**
 	 * Set a job schedule value.
 	 * 
-	 * @param jobSchedule The value of job schedule
+	 * @param jobSchedule
+	 *            The value of job schedule
 	 */
 	public void setJobSchedule(String jobSchedule) {
 		this.jobSchedule = jobSchedule;
@@ -132,7 +131,8 @@ public class JobInfo implements Serializable {
 	/**
 	 * Set a job trigger name value.
 	 * 
-	 * @param triggerName The value of job trigger name
+	 * @param triggerName
+	 *            The value of job trigger name
 	 */
 	public void setTriggerName(String triggerName) {
 		this.triggerName = triggerName;
@@ -150,7 +150,8 @@ public class JobInfo implements Serializable {
 	/**
 	 * Set a job start date value.
 	 * 
-	 * @param startDate The value of job start date
+	 * @param startDate
+	 *            The value of job start date
 	 */
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
@@ -168,7 +169,8 @@ public class JobInfo implements Serializable {
 	/**
 	 * Set a job end date value.
 	 * 
-	 * @param endDate The value of job end date
+	 * @param endDate
+	 *            The value of job end date
 	 */
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
@@ -186,7 +188,8 @@ public class JobInfo implements Serializable {
 	/**
 	 * Set a description value.
 	 * 
-	 * @param description The value of description
+	 * @param description
+	 *            The value of description
 	 */
 	public void setDescription(String description) {
 		this.description = description;
@@ -198,16 +201,17 @@ public class JobInfo implements Serializable {
 	 * @return The boolean value of job saved in xml file
 	 */
 	public boolean isInXml() {
-		return isInXml;
+		return inXml;
 	}
 
 	/**
 	 * Set a boolean value of job saved in xml file
 	 * 
-	 * @param isInXml The boolean value of job saved in xml file
+	 * @param isInXml
+	 *            The boolean value of job saved in xml file
 	 */
-	public void setInXml(boolean isInXml) {
-		this.isInXml = isInXml;
+	public void setInXml(boolean inXml) {
+		this.inXml = inXml;
 	}
 
 	/**
@@ -222,7 +226,8 @@ public class JobInfo implements Serializable {
 	/**
 	 * Set a job target method value.
 	 * 
-	 * @param jobTargetMethod The value of job target method
+	 * @param jobTargetMethod
+	 *            The value of job target method
 	 */
 	public void setJobTargetMethod(String jobTargetMethod) {
 		this.jobTargetMethod = jobTargetMethod;
@@ -240,7 +245,8 @@ public class JobInfo implements Serializable {
 	/**
 	 * Set a flag value of schedule type.
 	 * 
-	 * @param jobName The flag value of schedule type
+	 * @param jobName
+	 *            The flag value of schedule type
 	 */
 	public void setFlagScheduleType(String flagScheduleType) {
 		this.flagScheduleType = flagScheduleType;
@@ -255,8 +261,7 @@ public class JobInfo implements Serializable {
 				+ ", jobTarget=" + jobTarget + ", jobTargetMethod="
 				+ jobTargetMethod + ", jobSchedule=" + jobSchedule
 				+ ", startDate=" + startDate + ", endDate=" + endDate
-				+ ", description=" + description + ", isInXml=" + isInXml
+				+ ", description=" + description + ", isInXml=" + inXml
 				+ ", flagScheduleType=" + flagScheduleType + "]";
 	}
-
 }

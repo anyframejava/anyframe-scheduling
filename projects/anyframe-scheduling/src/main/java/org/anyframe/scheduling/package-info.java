@@ -16,7 +16,7 @@
 /**
  * Provides interface for executing Quartz Job API or job result API.
  * 
- * @since 1.0.4-SNAPSHOT
+ * @since 1.0.4
  */
 package org.anyframe.scheduling;
 

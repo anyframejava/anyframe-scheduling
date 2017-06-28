@@ -30,33 +30,36 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Support to make a result file with each job is executed.
- * Result contains start time, end time, success or failure and exception stackstrace.
+ * Support to make a result file with each job is executed. Result contains
+ * start time, end time, success or failure and exception stackstrace.
  * 
  * @author Sujeong Lee
  */
-public class SchedulingJobListener extends JobListenerSupport{
+public class SchedulingJobListener extends JobListenerSupport {
 
 	String name;
 	Logger logger = LoggerFactory.getLogger(SchedulingService.class);
 	private JobResultWriter jobResultWriter;
-	
+
 	public void setJobResultWriter(JobResultWriter jobResultWriter) {
 		this.jobResultWriter = jobResultWriter;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.quartz.JobListener#getName()
 	 */
 	public String getName() {
 		this.name = "SchedulingJobListener";
 		return name;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.quartz.listeners.JobListenerSupport#jobToBeExecuted(org.quartz.JobExecutionContext)
+	 * 
+	 * @seeorg.quartz.listeners.JobListenerSupport#jobToBeExecuted(org.quartz.
+	 * JobExecutionContext)
 	 */
 	public void jobToBeExecuted(JobExecutionContext context) {
 		JobResultInfo jobResultInfo = new JobResultInfo();
@@ -70,12 +73,13 @@ public class SchedulingJobListener extends JobListenerSupport{
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.quartz.listeners.JobListenerSupport#jobWasExecuted(org.quartz.JobExecutionContext, org.quartz.JobExecutionException)
+	 * 
+	 * @seeorg.quartz.listeners.JobListenerSupport#jobWasExecuted(org.quartz.
+	 * JobExecutionContext, org.quartz.JobExecutionException)
 	 */
 	public void jobWasExecuted(JobExecutionContext context,
 			JobExecutionException exception) {
-		JobResultInfo jobResultInfo = (JobResultInfo) context
-				.getResult();
+		JobResultInfo jobResultInfo = (JobResultInfo) context.getResult();
 		if (jobResultInfo == null) {
 			jobResultInfo = new JobResultInfo();
 
@@ -86,32 +90,30 @@ public class SchedulingJobListener extends JobListenerSupport{
 		}
 		jobResultInfo.setEndDate(new Date());
 
-		try {
-			if (exception == null) {
-				// Success
-				jobResultInfo.setIsSuccess(true);
-				jobResultInfo.setException(null);
-			} else {
-				// Fail
-				StringWriter sw = new StringWriter();
-				exception.printStackTrace(new PrintWriter(sw));
-				String stacktrace = sw.toString();
-				
-				jobResultInfo.setIsSuccess(false);
-				jobResultInfo.setException(stacktrace);
-			}
-			jobResultWriter.create(jobResultInfo);
-		} catch (Exception e) {
-			logger.error("Fail to create job execution result.", e);
-		}
+		if (exception == null) {
+			// Success
+			jobResultInfo.setIsSuccess(true);
+			jobResultInfo.setException(null);
+		} else {
+			// Fail
+			StringWriter sw = new StringWriter();
+			exception.printStackTrace(new PrintWriter(sw));
+			String stacktrace = sw.toString();
 
+			jobResultInfo.setIsSuccess(false);
+			jobResultInfo.setException(stacktrace);
+		}
+		
+		jobResultWriter.create(jobResultInfo);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.quartz.listeners.JobListenerSupport#jobExecutionVetoed(org.quartz.JobExecutionContext)
+	 * 
+	 * @see
+	 * org.quartz.listeners.JobListenerSupport#jobExecutionVetoed(org.quartz
+	 * .JobExecutionContext)
 	 */
 	public void jobExecutionVetoed(JobExecutionContext context) {
 	}
-
 }

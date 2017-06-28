@@ -15,17 +15,24 @@
  */
 package org.anyframe.plugin.scheduling.demo.web;
 
-import java.util.ArrayList;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
 import org.anyframe.scheduling.JobInfo;
 import org.anyframe.scheduling.SchedulingService;
+import org.anyframe.util.DateUtil;
 import org.quartz.JobKey;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
@@ -36,57 +43,64 @@ import org.springframework.web.bind.support.SessionStatus;
 @Controller("schedulingServiceDemoController")
 @RequestMapping("/scheduling.do")
 public class SchedulingServiceDemoController {
-	
+
+	private static final String DATE_PATTERN = "yyyy-MM-dd hh:MM";
+
 	@Inject
 	SchedulingService schedulingService;
-	
+
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+		DateFormat df = new SimpleDateFormat(DATE_PATTERN);
+		CustomDateEditor dateEdit = new CustomDateEditor(df, true);
+		binder.registerCustomEditor(Date.class, dateEdit);
+	}
+
 	@RequestMapping(params = "method=createView")
 	public String createView(Model model) throws Exception {
 		model.addAttribute(new JobInfo());
-		
+
 		return "scheduling/job/form";
 	}
-	
+
 	@RequestMapping(params = "method=create")
-	public String create(JobInfo jobInfo, BindingResult results,
-			SessionStatus status, HttpSession session) throws Exception {
-
-		if (results.hasErrors())
-			return "scheduling/movie/form";
-
-		schedulingService.create(jobInfo);
-		status.setComplete();
-
-		return "redirect:/scheduling.do?method=list";
-	}
-	
-	@RequestMapping(params = "method=init")
-	public String init(JobInfo jobInfo, BindingResult results,
-			SessionStatus status, HttpSession session) throws Exception {
+	public String create(JobInfo jobInfo, BindingResult result, SessionStatus status,
+			HttpSession session) throws Exception {
+		if(result.hasErrors()){
+			return "scheduling/job/form";
+		}
 		
+		jobInfo.setStartDate(new Date());
+		schedulingService.create(jobInfo);
+		status.setComplete();
+
+		return "redirect:/scheduling.do?method=list";
+	}
+
+	@RequestMapping(params = "method=init")
+	public String init(JobInfo jobInfo, SessionStatus status,
+			HttpSession session) throws Exception {
 		jobInfo = getInitJobInfo();
-		if (results.hasErrors())
-			return "scheduling/movie/form";
 
 		schedulingService.create(jobInfo);
 		status.setComplete();
 
 		return "redirect:/scheduling.do?method=list";
 	}
-	
+
 	@RequestMapping(params = "method=list")
 	public String list(
-			@RequestParam(value = "jobGroup", required=false) String jobGroup,
-			JobInfo jobInfo, BindingResult result, Model model) throws Exception {
+			@RequestParam(value = "jobGroup", required = false) String jobGroup,
+			JobInfo jobInfo, Model model) throws Exception {
 
-		ArrayList<?> resultList = schedulingService.getList(jobGroup);
-		
+		List<JobInfo> resultList = schedulingService.getList(jobGroup);
+
 		model.addAttribute("jobInfo", jobInfo);
 		model.addAttribute("schedules", resultList);
 
 		return "scheduling/job/list";
 	}
-	
+
 	@RequestMapping(params = "method=get")
 	public String get(@RequestParam("jobName") String jobName,
 			@RequestParam("jobGroup") String jobGroup, Model model)
@@ -99,14 +113,14 @@ public class SchedulingServiceDemoController {
 
 		return "scheduling/job/form";
 	}
-	
+
 	@RequestMapping(params = "method=update")
-	public String update(JobInfo jobInfo, BindingResult results,
+	public String update(JobInfo jobInfo, BindingResult result,
 			SessionStatus status) throws Exception {
-		if (results.hasErrors()) {
+		if (result.hasErrors()) {
 			return "scheduling/job/form";
 		}
-
+		
 		schedulingService.update(jobInfo);
 		status.setComplete();
 
@@ -114,36 +128,37 @@ public class SchedulingServiceDemoController {
 	}
 
 	@RequestMapping(params = "method=remove")
-	public String remove(@RequestParam("jobName") String jobName, @RequestParam("jobGroup") String jobGroup)
-			throws Exception {
+	public String remove(@RequestParam("jobName") String jobName,
+			@RequestParam("jobGroup") String jobGroup) throws Exception {
 		schedulingService.delete(new JobKey(jobName, jobGroup));
 		return "redirect:/scheduling.do?method=list";
 	}
-	
+
 	@RequestMapping(params = "method=run")
-	public String run(@RequestParam("jobName") String jobName, @RequestParam("jobGroup") String jobGroup)
-			throws Exception {
+	public String run(@RequestParam("jobName") String jobName,
+			@RequestParam("jobGroup") String jobGroup) throws Exception {
 		schedulingService.run(new JobKey(jobName, jobGroup));
 		return "redirect:/scheduling.do?method=list";
 	}
-	
+
 	@RequestMapping(params = "method=stop")
-	public String stop(@RequestParam("jobName") String jobName, @RequestParam("jobGroup") String jobGroup)
-			throws Exception {
+	public String stop(@RequestParam("jobName") String jobName,
+			@RequestParam("jobGroup") String jobGroup) throws Exception {
 		schedulingService.stop(new JobKey(jobName, jobGroup));
 		return "redirect:/scheduling.do?method=list";
 	}
-	
+
 	private JobInfo getInitJobInfo() {
 		JobInfo jobInfo = new JobInfo();
-		
+
 		jobInfo.setJobName("movieCountJob");
 		jobInfo.setJobTarget("org.anyframe.plugin.scheduling.job.MovieCountJob");
 		jobInfo.setJobSchedule("0 0/1 * * * ?");
 		jobInfo.setFlagScheduleType("cron");
 		jobInfo.setDescription("This is sample job for test.");
-		
+		jobInfo.setStartDate(DateUtil.stringToDate(DateUtil.getCurrentDate(DATE_PATTERN), DATE_PATTERN));
+
 		return jobInfo;
 	}
-	
+
 }
