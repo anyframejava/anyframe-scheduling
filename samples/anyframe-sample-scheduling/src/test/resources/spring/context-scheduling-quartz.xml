@@ -12,7 +12,7 @@
 	<bean name="executeMe" class="org.anyframe.sample.scheduling.unit.ExecuteMe" scope="singleton"/>
 	
 	<bean id="simpleTrigger"
-		class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
 		<property name="jobDetail" ref="jobDetail" />
 		<property name="startDelay" value="0" />
 		<property name="repeatInterval" value="5000" />

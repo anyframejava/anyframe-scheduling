@@ -567,7 +567,7 @@
 						But, because it is stateless job, value cannot be modified in repetitively executed job.
 					</para>					
 					<programlisting language="xml"><![CDATA[<!-- JobDetailBean -->
-<bean id=<emphasis role="bold">"jobDetail01"</emphasis> 
+<bean id=]]><emphasis role="bold">"jobDetail01"</emphasis><![CDATA[ 
     class=]]><emphasis role="bold">"org.springframework.scheduling.quartz.JobDetailBean"</emphasis><![CDATA[>
     <]]><emphasis role="bold">property name="jobClass" value="anyframe.sample.scheduling.SimpleQuartzJobBean" /</emphasis><![CDATA[>
     <property name="jobDataAsMap">
@@ -817,7 +817,7 @@ public class StatefulQuartzJobBean <emphasis role="bold">implements StatefulJob<
 					<programlisting language="java">import org.quartz.TriggerListener;
 					
 public class GlobalTriggerListener <emphasis role="bold">implements TriggerListener</emphasis> {
-    Log logger = LogFactory.getLog(GlobalTriggerListener.class);
+    Logger logger = LoggerFactory.getLogger(GlobalTriggerListener.class);
     String listenerType = "Non global";
 
     public void setListenerType(String listenerType) {
@@ -825,20 +825,20 @@ public class GlobalTriggerListener <emphasis role="bold">implements TriggerListe
     }
 
     public void <emphasis role="bold">triggerFired(Trigger trigger, JobExecutionContext ctx)</emphasis> {
-        logger.info("Scheduled " + trigger.getJobName() + " Fired!!");
+        logger.info("Scheduled {} Fired!!", trigger.getJobName());
     }
 
     public boolean <emphasis role="bold">vetoJobExecution(Trigger trigger, JobExecutionContext ctx)</emphasis> {
-        logger.info("Scheduled " + trigger.getJobName() + " Executed!!");
+        logger.info("Scheduled {} Executed!!", trigger.getJobName());
         return false;
     }
 
     public void <emphasis role="bold">triggerComplete(Trigger trigger, JobExecutionContext ctx, int arg)</emphasis> {
-        logger.info("Scheduled " + trigger.getJobName() + " Completed!!");
+        logger.info("Scheduled {} Completed!!", trigger.getJobName());
     }
 
     public void <emphasis role="bold">triggerMisfired(Trigger trigger)</emphasis> {
-        logger.error("Scheduled " + trigger.getJobName() + " Misfired!!");
+        logger.error("Scheduled {} Misfired!!", trigger.getJobName());
     }
 
     public String getName() {

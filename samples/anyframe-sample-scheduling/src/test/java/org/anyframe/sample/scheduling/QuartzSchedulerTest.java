@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2008 the original author or authors.
+ * Copyright 2002-2012 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,28 +56,13 @@ public class QuartzSchedulerTest {
 		Thread.sleep(3000);
 
 		try {
-			QuartzTestBean exportService = (QuartzTestBean) ctx
-					.getBean("exportService");
-			QuartzTestBean importService = (QuartzTestBean) ctx
-					.getBean("importService");
-			QuartzListener exportListener = (QuartzListener) ctx
-					.getBean("exportListener");
-			QuartzListener importListener = (QuartzListener) ctx
-					.getBean("importListener");
+			QuartzTestBean exportService = (QuartzTestBean) ctx.getBean("exportService");
+			QuartzTestBean importService = (QuartzTestBean) ctx.getBean("importService");
 
-			Assert.assertEquals("doImport called exportService", 0,
-					exportService.getImportCount());
-			Assert.assertEquals("doExport not called on exportService", 2,
-					exportService.getExportCount());
-			Assert.assertEquals("doImport not called on importService", 0,
-					importService.getImportCount());
-			Assert.assertEquals("doExport called on importService", 0,
-					importService.getExportCount());
-			Assert.assertEquals(2, exportListener.getExecutionCount());
-			Assert.assertEquals(2, exportListener.getPreExecutionCount());
-			Assert.assertEquals(0, importListener.getExecutionCount());
-			Assert.assertEquals(0, importListener.getPreExecutionCount());
-			Assert.assertEquals(2, importListener.getVetoedCount());
+			Assert.assertEquals("doImport called exportService", 0, exportService.getImportCount());
+			Assert.assertEquals("doExport not called on exportService", 4, exportService.getExportCount());
+			Assert.assertEquals("doImport not called on importService", 4, importService.getImportCount());
+			Assert.assertEquals("doExport called on importService", 0, importService.getExportCount());
 
 		} finally {
 			ctx.close();

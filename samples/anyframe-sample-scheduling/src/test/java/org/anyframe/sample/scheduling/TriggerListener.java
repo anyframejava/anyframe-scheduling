@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2008 the original author or authors.
+ * Copyright 2002-2012 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,10 +15,11 @@
 */
 package org.anyframe.sample.scheduling;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.quartz.JobExecutionContext;
 import org.quartz.Trigger;
+import org.quartz.Trigger.CompletedExecutionInstruction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanNameAware;
 
 /**
@@ -27,8 +28,8 @@ import org.springframework.beans.factory.BeanNameAware;
  */
 public class TriggerListener implements org.quartz.TriggerListener,
 		BeanNameAware {
-	Log logger = LogFactory.getLog(TriggerListener.class);
-
+	Logger logger = LoggerFactory.getLogger(TriggerListener.class);
+	
 	private String name;
 
 	public TriggerListener() {
@@ -41,29 +42,28 @@ public class TriggerListener implements org.quartz.TriggerListener,
 
 	public void triggerFired(Trigger trigger, JobExecutionContext context) {
 
-		String triggerName = trigger.getName();
+		String triggerName = trigger.getKey().getName();
 		logger.info(triggerName + " was fired");
 	}
 
 	public boolean vetoJobExecution(Trigger trigger, JobExecutionContext context) {
 
-		String triggerName = trigger.getName();
+		String triggerName = trigger.getKey().getName();
 		logger.info(triggerName + " was not vetoed");
 		return true;
 	}
 
 	public void triggerMisfired(Trigger trigger) {
-		String triggerName = trigger.getName();
+		String triggerName = trigger.getKey().getName();
 		logger.info(triggerName + " misfired");
 	}
 
 	public void triggerComplete(Trigger trigger, JobExecutionContext context,
-			int triggerInstructionCode) {
-
-		String triggerName = trigger.getName();
+			CompletedExecutionInstruction triggerInstructionCode) {
+		String triggerName = trigger.getKey().getName();
 		logger.info(triggerName + " is complete");
 	}
-
+	
 	public void setBeanName(String name) {
 		this.name = name;
 	}

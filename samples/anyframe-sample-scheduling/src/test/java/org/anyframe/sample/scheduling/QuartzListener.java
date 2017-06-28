@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2008 the original author or authors.
+ * Copyright 2002-2012 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,19 +15,19 @@
 */
 package org.anyframe.sample.scheduling;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import org.quartz.JobListener;
+import org.quartz.listeners.JobListenerSupport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanNameAware;
 
 /**
  * @author SoYon Lim
  * @author JongHoon Kim
  */
-public class QuartzListener implements JobListener, BeanNameAware {
-	Log logger = LogFactory.getLog(QuartzListener.class);
+public class QuartzListener extends JobListenerSupport implements BeanNameAware {
+	Logger logger = LoggerFactory.getLogger(QuartzListener.class);
 
 	private int preExecutionCount;
 
@@ -43,20 +43,20 @@ public class QuartzListener implements JobListener, BeanNameAware {
 
 	public void jobToBeExecuted(JobExecutionContext context) {
 		preExecutionCount++;
-		String jobName = context.getJobDetail().getName();
+		String jobName = context.getJobDetail().getKey().getName();
 		logger.info(jobName + " is about to be executed");
 	}
 
 	public void jobExecutionVetoed(JobExecutionContext context) {
 		vetoedCount++;
-		String jobName = context.getJobDetail().getName();
+		String jobName = context.getJobDetail().getKey().getName();
 		logger.info(jobName + " was vetoed and not executed()");
 	}
 
 	public void jobWasExecuted(JobExecutionContext context,
 			JobExecutionException jobException) {
 		executionCount++;
-		String jobName = context.getJobDetail().getName();
+		String jobName = context.getJobDetail().getKey().getName();
 		logger.info(jobName + " was executed");
 	}
 

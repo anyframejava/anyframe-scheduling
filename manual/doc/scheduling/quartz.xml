@@ -3,7 +3,7 @@
 
 	<para>
 		Anyframe 에서는 JDK의 Timer Scheduler보다 <emphasis role="bold">Quartz Scheduler 사용을 추천</emphasis>한다. Quartz Scheduler는 JDK Timer Scheduler보다 더
-		유동성있고 성능이 좋다. 자세한 내용은 <ulink url="http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/scheduling.html">
+		유동성있고 성능이 좋다. 자세한 내용은 <ulink url="http://static.springsource.org/spring/docs/3.1.x/spring-framework-reference/html/scheduling.html">
 		Spring 매뉴얼의 Scheduling 부분</ulink>을 참고하도록 한다.
 	</para>
 	
@@ -11,7 +11,7 @@
 		<title>Quartz Scheduler</title>
 		<para>
 			Quartz는 Job과 Trigger 그리고 JobDetail을 사용하여 스케줄링 기능을 수행한다. Quartz에 대한 자세한 내용은 
-			<ulink url="http://www.opensymphony.com/quartz/">http://www.opensymphony.com/quartz</ulink>를 참고한다.
+			<ulink url="http://quartz-scheduler.org/">http://quartz-scheduler.org/</ulink>를 참고한다.
 		</para>
 		<itemizedlist>
 			<listitem>
@@ -44,7 +44,7 @@
 			</listitem>
 		</itemizedlist>
 		<para>
-			아래 예제에서는 JobDetailBean, MethodInvokingJobDetailFactoryBean, SimpleTriggerBean, CronTriggerBean, TriggerListener, SchedulerFactoryBean
+			아래 예제에서는 JobDetailBean, MethodInvokingJobDetailFactoryBean, SimpleTriggerFactoryBean, CronTriggerFactoryBean, TriggerListener, SchedulerFactoryBean
 			등을 이용하여 일정한 시간 간격 마다 특정 메소드를 실행시키는 방법을 보여주고 있다.
 		</para>
 		<itemizedlist>
@@ -63,8 +63,8 @@
 			</listitem>
 			<listitem>
 				<para>
-					<emphasis role="bold">SimpleTriggerBean, CronTriggerBean</emphasis> : Spring Framework에서 Quartz를 손쉽게 사용할 수 있도록 2개의 TriggerBean을 
-					제공한다. SimpleTriggerBean과 CronTriggerBean은 Trigger로써 동작하는 것은 동일하나 CronTriggerBean의 경우, 시간 실행 조건을 cron expression을 이용하여
+					<emphasis role="bold">SimpleTriggerFactoryBean, CronTriggerFactoryBean</emphasis> : Spring Framework에서 Quartz를 손쉽게 사용할 수 있도록 2개의 TriggerBean을 
+					제공한다. SimpleTriggerFactoryBean과 CronTriggerFactoryBean은 Trigger로써 동작하는 것은 동일하나 CronTriggerFactoryBean의 경우, 시간 실행 조건을 cron expression을 이용하여
 					작성하는 것이 차이점이다. SimpleTrigger보다 상세한 스케줄링 실행 시간 조건을 설정할 수 있으면서도 설정 방법이 복잡하지 않다.
 				</para>
 			</listitem>
@@ -164,7 +164,7 @@
 			</tgroup>
 		</informaltable>
 		<para>
-			다음은 <emphasis role="bold">SimpleTriggerBean</emphasis>의 주요 속성으로 정의되어야 할 항목들에 대한 설명이다.
+			다음은 <emphasis role="bold">SimpleTriggerFactoryBean</emphasis>의 주요 속성으로 정의되어야 할 항목들에 대한 설명이다.
 		</para>
 		<informaltable>
 			<tgroup cols="4">
@@ -205,7 +205,7 @@
 					<row>
 						<entry>triggerListenerNames</entry>
 						<entry>
-							특정 trigger에만(즉, Non-global) TriggerListener를 설정하여 	Trigger가 fire-<![CDATA[>]]>execute-<![CDATA[>]]>complete 혹은 misfire되는 시점에 특정 일을
+							특정 trigger에만(즉, Non-global) TriggerListener를 설정하여 Trigger가 fire-<![CDATA[>]]>execute-<![CDATA[>]]>complete 혹은 misfire되는 시점에 특정 일을
 							수행하고자 할때 TriggerListener를 설정하는데 여기에는 triggerListenerName을 등록한다. 이 triggerListenerName은 TriggerListener 인터페이스를 
 							구현한 클래스의 getName() 메소드에서 리턴한 이름을 작성하도록 한다.
 						</entry>
@@ -251,7 +251,7 @@
 							Trigger는 Scheduler에 문제가 발생하였거나 Job을 수행시키는 Quartz의 Thread pool에서 현재 사용 가능한 Thread가 존재하지 않을 때 실행되지 못하는 
 							경우가 있다. 이러한 경우 Job Store 방식으로 DB를 사용하고 있다면, 다음 Scheduler가 정상 동작 시 실행되지 못한 Job들에 대해서 misfire 시킨다. 
 							(하위 Advanced Quartz <![CDATA[>>]]> Job Stores 내용 참고) 기본적으로 'smart policy' instruction이 사용되고, 그외 다음과 같은 misfire
-							instruction명을 설정할 수 있다. 자세한 내용은 <ulink url="http://www.opensymphony.com/quartz/wikidocs/TutorialLesson4.html">Quartz 
+							instruction명을 설정할 수 있다. 자세한 내용은 <ulink url="http://quartz-scheduler.org/documentation/quartz-2.1.x/tutorials/tutorial-lesson-04">Quartz 
 							Tutorial <![CDATA[>>]]> Misfire Instructions</ulink>를 참조하도록 한다.
 							<itemizedlist>
 								<listitem>
@@ -279,7 +279,7 @@
 			</tgroup>
 		</informaltable>
 		<para>
-			다음은 <emphasis role="bold">CronTriggerBean</emphasis> 의 주요 속성으로 정의되어야 할 항목들에 대한 설명이다.
+			다음은 <emphasis role="bold">CronTriggerFactoryBean</emphasis> 의 주요 속성으로 정의되어야 할 항목들에 대한 설명이다.
 		</para>
 		<informaltable>
 			<tgroup cols="4">
@@ -399,11 +399,11 @@
 				</tbody>
 			</tgroup>
 		</informaltable>
-		<section id="spring_scheduling_overview_advanced">
+		<section id="scheduling_quartz_overview_advanced">
 			<title>Advanced Quartz</title>
 			<para>
 				이 매뉴얼에 소개된 내용을 통해서도 Quartz의 많은 기능을 사용할 수 있으나, 이외에도 여러 고급 기능 등이 존재한다. 여기서는 Job과 Trigger에 관련된 정보를 저장하는 방법에 
-				대해서 소개한다. 더욱 자세한 내용은 <ulink url="http://www.opensymphony.com/quartz/">http://www.opensymphony.com/quartz</ulink>를 참고한다.
+				대해서 소개한다. 더욱 자세한 내용은 <ulink url="http://quartz-scheduler.org/">http://quartz-scheduler.org/</ulink>를 참고한다.
 			</para>
 			<itemizedlist>
 				<listitem>
@@ -412,6 +412,7 @@
 					</para>
 					<para>
 						Quartz는 Job과 Trigger에 관련된 정보를 2가지 서로 다른 방식으로 저장할 수 있게 한다. 기본적으로는 메모리에 저장되는데, DB에 저장하도록 선택할 수도 있다.
+						또한 Quartz 1.7 버전부터 분산 메모리인 Terracotta를 이용하는 방식도 제공하고 있다. 
 						<emphasis role="bold">기본(Default)적으로 	RAMJobStore 클래스를 이용하여 Memory에 저장</emphasis>되는데, 이 Job Store 방식을 사용할
 						때 모든 데이터가 Memory에 저장되기 때문에 성능이 가장 좋다. 그러나, 어플리케이션이나 시스템에 문제가 발생하면 RAM에 저장되어있던 모든 데이터가 손실될 위험성이 있다.
 					</para>
@@ -419,12 +420,19 @@
 						위의 Memory 저장 방식의 문제점을 해결하기 위해 Quartz는 <emphasis role="bold">JDBCJobStore 클래스를 이용하여 데이터를 DB에 저장</emphasis>	하도록 한다. 
 						모든 데이터가 JDBC를 통해서 DB에 저장되므로 어플리케이션이나 시스템에 문제가 발생해도 데이터가 손실될 위험은 없으나 성능이 좋지 않고 복잡성이 증가한다. 데이터를 
 						DB에 저장하는 방식을 사용하기 위해서는 위의 SchedulerFactoryBean 속성 중 dataSource 속성 값을 설정해줘야 하는데 dataSource 속성 설정 방법은
-						<ulink url="http://dev.anyframejava.org/docs/anyframe/plugin/essential/core/1.0.3/reference/htmlsingle/core.html#core_spring_datasource"> Core Plugin >> Spring >> DataSource</ulink>를 참고한다.
+						<ulink url="http://dev.anyframejava.org/docs/anyframe/plugin/essential/core/1.0.4/reference/htmlsingle/core.html#core_spring_datasource"> Core Plugin >> Spring >> DataSource</ulink>를 참고한다.
 					</para>
 					<para>
 						Job과 Trigger에 관련된 정보를 DB를 통해 관리하기 위해서는 DB Table이 준비되어 있어야 하는데, Table은 Quartz를 다운로드 받은 후 docs/dbTables 폴더 내의 
 						table-creation SQL script 중 사용하고자 하는 DB(ex. Oracle의 경우, tables_oracle.sql)에 맞는 script를 수행하여 생성시키도록 한다. 더욱 자세한 내용과 
-						사용 방법은 <ulink url="http://www.opensymphony.com/quartz/wikidocs/ConfigDataSources.html">Quartz Configure DataSources</ulink>를 참고하도록 
+						사용 방법은 <ulink url="http://quartz-scheduler.org/documentation/quartz-2.1.x/tutorials/tutorial-lesson-09">JDBCJobStore</ulink>를 참고하도록 
+						한다.
+					</para>
+					<para>
+						Terracotta는 Job을 Terracotta 서버에 등록하여 사용하므로 어플리케이션이나 시스템에 문제가 발생하였을 경우라도 데이터가 손실되지 않고, 또한 클러스터 환경에서도 사용할 수 있다. 
+						이는 모든 데이터를 Memory에 저장하는 RAMJobStore보다는 성능이 좋지 않으나, DB를 사용하는 JDBCJobStore에 비해 성능이 좋다. 
+						TerracottaJobStore를 사용하기 위해서는 일부 정보를 Property 파일에 정의해주어야 한다.
+						더욱 자세한 내용과 사용 방법은 <ulink url="http://quartz-scheduler.org/documentation/quartz-2.1.x/tutorials/tutorial-lesson-09">TerracottaJobStore</ulink>를 참고하도록 
 						한다.
 					</para>
 				</listitem>
@@ -448,7 +456,7 @@
 						Job들 사이에 공유되어 사용될 수 있으나 Stateless한 Job이므로 반복 수행되는 Job에서 값을 변경시킬 수는 없다.
 					</para>					
 					<programlisting language="xml"><![CDATA[<!-- JobDetailBean -->
-<bean id=<emphasis role="bold">"jobDetail01"</emphasis> 
+<bean id=]]><emphasis role="bold">"jobDetail01"</emphasis><![CDATA[ 
     class=]]><emphasis role="bold">"org.springframework.scheduling.quartz.JobDetailBean"</emphasis><![CDATA[>
     <]]><emphasis role="bold">property name="jobClass" value="org.anyframe.sample.scheduling.SimpleQuartzJobBean" /</emphasis><![CDATA[>
     <property name="jobDataAsMap">
@@ -481,73 +489,6 @@ public class SimpleQuartzJobBean <emphasis role="bold">extends QuartzJobBean</em
         System.out.println("count="+this.count);
 
 ...중략</programlisting>
-					<para>
-						위에서 언급한 SimpleQuartzJobBean, context-scheduling.xml  샘플 코드는 본 섹션 내의 <link linkend="scheduling_schedulling_resources">다운로드 - anyframe-sample-scheduling</link>을 통해 
-						다운로드받을 수 있다.
-					</para>	
-				</listitem>
-				<listitem>
-					<para>
-						<emphasis role="bold">JobDetailBean with StatefulJob</emphasis>
-					</para>
-					<para>
-						다음은 Quartz에서 제공하는 StatefulJob 인터페이스 클래스를 구현하여 작성한 Job을 Job 클래스로 가지고 있는 JobDetailBean인 <emphasis role="bold">
-						jobDetail02</emphasis>을 정의한 Spring 속성 정의 파일( context-scheduling.xml )의 일부이다. JobDetailBean의 jobDataAsMap 속성으로 설정한 데이터값은 
-						Job들 사이에 공유되어 사용될 수 있고, Stateful한 Job이므로 반복 수행되는 Job에서 값을 변경시킬 수 있다.(예제에서 count라는 값을 1씩 증가시키고 있다.)
-					</para>
-					<programlisting language="xml"><![CDATA[<!-- JobDetailBean -->
-<bean id=<emphasis role="bold">"jobDetail02"</emphasis>
-    class=]]><emphasis role="bold">"org.springframework.scheduling.quartz.JobDetailBean"</emphasis><![CDATA[>
-    <]]><emphasis role="bold">property name="jobClass" value="org.anyframe.sample.scheduling.StatefulQuartzJobBean"/</emphasis><![CDATA[>
-    <property name="jobDataAsMap">
-        <map>
-            <entry>
-                <key>
-                    <value>count</value>
-                </key>
-                <value>6</value>
-            </entry>
-        </map>
-    </property>
-</bean>]]></programlisting>
-					<para>
-						다음은 Quartz에서 제공하는 StatefulJob 인터페이스 클래스를 구현하여 작성한 테스트 용 StatefulQuartzJobBean 클래스의 구현 모습이다. StatefulJob 인터페이스 
-						클래스의 메소드인 execute 메소드를 아래와 같이 JobExecutionContext를 argument로 갖도록 구현하고, 메소드 내부에서는 executeInternal 메소드를 호출하도록 
-						한다. 이 예제에서는 JobDetailBean의 jobDataAsMap 속성으로 지정한 count 값을 변경시켜서 수행되는 동일한 Job들 사이에 값을 공유시키고 있다.
-					</para>
-					<programlisting language="java">import org.quartz.StatefulJob;
-public class StatefulQuartzJobBean <emphasis role="bold">implements StatefulJob</emphasis> {
-    public void setCount(int count) {
-        this.count=count;
-    }
-
-    public void <emphasis role="bold">execute(JobExecutionContext context) </emphasis>
-        throws JobExecutionException {
-        try {
-            BeanWrapper bw = PropertyAccessorFactory.forBeanPropertyAccess(this);
-            MutablePropertyValues pvs = new MutablePropertyValues();
-            pvs.addPropertyValues(context.getScheduler().getContext());
-            pvs.addPropertyValues(context.getMergedJobDataMap());
-            bw.setPropertyValues(pvs, true);
-        } catch (SchedulerException ex) {
-            throw new JobExecutionException(ex);
-        }
-        <emphasis role="bold">executeInternal(context);</emphasis>
-    }
-
-    public void <emphasis role="bold">executeInternal(JobExecutionContext context)</emphasis>
-        throws JobExecutionException {
-        this.count = count + 1;
-        context.getJobDetail().getJobDataMap().putAsString("count", count);
-        System.out.println(this.getClass().getName() + "::" + this.count);
-        result = count;
-    }
-
-...중략</programlisting>
-					<para>
-						위에서 언급한 StatefulQuartzJobBean, context-scheduling.xml  샘플 코드는 본 섹션 내의 <link linkend="scheduling_schedulling_resources">다운로드 - anyframe-sample-scheduling</link>을 통해 
-						다운로드받을 수 있다.
-					</para>	
 				</listitem>
 				<listitem>
 					<para>
@@ -555,99 +496,88 @@ public class StatefulQuartzJobBean <emphasis role="bold">implements StatefulJob<
 					</para>
 					<para>
 						다음은 Spring Framework에서 제공하는 MethodInvokingJobDetailFactoryBean을 그대로 재사용하여 POJO 형태로 작성한 job을 Job 클래스로 가지고 있는 JobDetail인
-						<emphasis role="bold">productSummaryJob</emphasis>을 정의한 Spring 속성 정의 파일( context-scheduling.xml )의 일부이다.
+						<emphasis role="bold">summaryJob</emphasis>을 정의한 Spring 속성 정의 파일 예시의 일부이다.
 					</para>
-					<programlisting language="xml"><![CDATA[<bean name=]]><emphasis role="bold">"job"</emphasis><![CDATA[ class="org.anyframe.plugin.scheduling.job.MovieStatusSummaryJob" init-method="initialize">
-	<constructor-arg index="0" ref="schedulingGenreService" />
-	<constructor-arg index="1" ref="queryService" />
-</bean>
+					<programlisting language="xml"><![CDATA[<bean name=]]><emphasis role="bold">"job"</emphasis><![CDATA[ class="foo.bar.SummaryJob"/>
 
-<bean id=]]><emphasis role="bold">"movieSummaryJob"</emphasis><![CDATA[ class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+<bean id=]]><emphasis role="bold">"summaryJob"</emphasis><![CDATA[ class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 	<property name="targetObject" ref="job" />
 	<property name="targetMethod" value="execute" />
 	<property name="concurrent" value="false" />
 </bean>]]></programlisting>
 					<para>
-						다음은 Job 관련 API에 종속되지 않고 POJO로 작성한 ProductStatusSummaryJob 클래스의 구현 모습이다. Trigger에 의해서 ProductStatusSummaryJob 클래스의 
+						다음은 Job 관련 API에 종속되지 않고 POJO로 작성한 SummaryJob 클래스의 구현 모습이다. Trigger에 의해서 SummaryJob 클래스의 
 						execute() 메소드가 수행될 것이다. execute() 메소드 내에 스케줄링 일정에 따라 반복적으로 수행될 작업을 기술한다.
 					</para>
-					<programlisting language="java">public class <emphasis role="bold">MovieStatusSummaryJob</emphasis> {
+					<programlisting language="java">public class <emphasis role="bold">SummaryJob</emphasis> {
     public void <emphasis role="bold">execute()</emphasis> throws Exception {
-        removeAllMonthlyMovieStatus();
-        insertMonthlyMovieStatus();
+        removeStatus();
+        insertStatus();
     }
     ...중략
 }</programlisting>
 				</listitem>
 				<listitem>
 					<para>
-						<emphasis role="bold">SimpleTriggerBean for Stateless Job</emphasis>
+						<emphasis role="bold">SimpleTriggerFactoryBean for Stateless Job</emphasis>
 					</para>
 					<para>
-						다음은 Spring Framework에서 제공하는 SimpleTriggerBean를 이용하여 위에서 작성한 JobDetail 중 <emphasis role="bold">jobDetail01</emphasis>
+						다음은 Spring Framework에서 제공하는 SimpleTriggerFactoryBean를 이용하여 위에서 작성한 JobDetail 중 <emphasis role="bold">jobDetail01</emphasis>
 						을 설정한 Spring 속성 정의 파일( context-scheduling.xml )의 일부이다.
 					</para>
 					<para>
 						처음 Job 수행 이후 반복 수행 시간의 간격은 1초로, 반복 회수는 3회로 설정되었으며 해당 trigger에만 적용시킬 triggerListener가 triggerListenerNames 속성 정보로 
 						정의되어 있다. triggerListener Bean 설정은 하위 내용을 참고한다.
 					</para>
-					<programlisting language="xml"><![CDATA[<!-- SimpleTriggerBean -->
+					<programlisting language="xml"><![CDATA[<!-- SimpleTriggerFactoryBean -->
 <bean id=]]><emphasis role="bold">"simpleTrigger01"</emphasis><![CDATA[
-    class=]]><emphasis role="bold">"org.springframework.scheduling.quartz.SimpleTriggerBean"</emphasis><![CDATA[>
+    class=]]><emphasis role="bold">"org.springframework.scheduling.quartz.SimpleTriggerFactoryBean"</emphasis><![CDATA[>
     <property name="jobDetail" ref="]]><emphasis role="bold">jobDetail01"</emphasis><![CDATA[/>
     <property name="repeatInterval" value="1000"/>
     <property name="repeatCount" value="3"/>
     <property name="triggerListenerNames" value="triggerListener"/>
 </bean>]]></programlisting>
-					<para>
-						위에서 언급한 context-scheduling.xml  샘플 코드는 본 섹션 내의 <link linkend="scheduling_schedulling_resources">다운로드 - anyframe-sample-scheduling</link>을 통해 
-						다운로드받을 수 있다.
-					</para>	
 				</listitem>
 				<listitem>
 					<para>
-						<emphasis role="bold">SimpleTriggerBean for StatefulJob</emphasis>
+						<emphasis role="bold">SimpleTriggerFactoryBean for StatefulJob</emphasis>
 					</para>
 					<para>
-						다음은 Spring Framework에서 제공하는 SimpleTriggerBean를 이용하여 위에서 작성한 JobDetail 중 <emphasis role="bold"> jobDetail02</emphasis>
+						다음은 Spring Framework에서 제공하는 SimpleTriggerFactoryBean를 이용하여 위에서 작성한 JobDetail 중 <emphasis role="bold"> jobDetail02</emphasis>
 						을 설정한 Spring 속성 정의 파일( context-scheduling.xml )의 일부이다.
 					</para>
 					<para>
-						하나의 Trigger는 하나의 JobDetail을 설정해야 하므로 위의 SimpleTriggerBean과 동일한 속성 정보를 갖는 Trigger를 추가 작성한다. 
+						하나의 Trigger는 하나의 JobDetail을 설정해야 하므로 위의 SimpleTriggerFactoryBean과 동일한 속성 정보를 갖는 Trigger를 추가 작성한다. 
 					</para>
 					<para>
 						처음 Job 수행 이후 반복 수행 시간의 간격은 1초로, 반복 회수는 3회로 설정되었으며 해당 trigger에만
 						적용시킬 triggerListener가 triggerListenerNames 속성 정보로 정의되어 있다.
 						triggerListener Bean 설정은 하위 내용을 참고한다.
 					</para>
-					<programlisting language="xml"><![CDATA[<!-- SimpleTriggerBean -->
+					<programlisting language="xml"><![CDATA[<!-- SimpleTriggerFactoryBean -->
 <bean id="]]><emphasis role="bold">simpleTrigger02"</emphasis><![CDATA[
-    class=]]><emphasis role="bold">"org.springframework.scheduling.quartz.SimpleTriggerBean"</emphasis><![CDATA[>
+    class=]]><emphasis role="bold">"org.springframework.scheduling.quartz.SimpleTriggerFactoryBean"</emphasis><![CDATA[>
     <property name="jobDetail" ref=]]><emphasis role="bold">"jobDetail02"</emphasis><![CDATA[/>
     <property name="repeatInterval" value="1000"/>
     <property name="repeatCount" value="3"/>
     <property name="triggerListenerNames" value="triggerListener"/>
 </bean>]]></programlisting>
-					<para>
-						위에서 언급한 context-scheduling.xml  샘플 코드는 본 섹션 내의 <link linkend="scheduling_schedulling_resources">다운로드 - anyframe-sample-scheduling</link>을 통해 
-						다운로드받을 수 있다.
-					</para>	
 				</listitem>
 				<listitem>
 					<para>
-						<emphasis role="bold">CronTriggerBean</emphasis>
+						<emphasis role="bold">CronTriggerFactoryBean</emphasis>
 					</para>
 					<para>
-						다음은 Spring Framework에서 제공하는 CronTriggerBean를 이용하여 작성 Spring 속성 정의 파일( context-scheduling.xml )의 일부이다.
+						다음은 Spring Framework에서 제공하는 CronTriggerFactoryBean 이용하여 작성 Spring 속성 정의 파일( context-scheduling.xml )의 일부이다.
 					</para>
 					<para>
-						아래 예제에서 보면 SimpleTriggerBean과 달리 cron expression을 통해 스케줄링 시간을 설정한 모습을 볼 수 있는데, 현재 1분마다  실행되도록 
+						아래 예제에서 보면 SimpleTriggerFactoryBean과 달리 cron expression을 통해 스케줄링 시간을 설정한 모습을 볼 수 있는데, 현재 1분마다  실행되도록 
 						설정한 것이다.
 					</para>
 					<programlisting language="xml"><![CDATA[<!-- CronTriggerBean -->
 <bean id=]]><emphasis role="bold">"cronTrigger"</emphasis><![CDATA[
-    class=]]><emphasis role="bold">"org.springframework.scheduling.quartz.CronTriggerBean"</emphasis><![CDATA[>
-    <property name="jobDetail" ref=]]><emphasis role="bold">"movieSummaryJob"</emphasis><![CDATA[/>
+    class=]]><emphasis role="bold">"org.springframework.scheduling.quartz.CronTriggerFactoryBean"</emphasis><![CDATA[>
+    <property name="jobDetail" ref=]]><emphasis role="bold">"jobDetail03"</emphasis><![CDATA[/>
     <property name="cronExpression" value="0 0/1 * * * ?" />
 </bean>]]></programlisting>
 				</listitem>
@@ -671,7 +601,7 @@ public class StatefulQuartzJobBean <emphasis role="bold">implements StatefulJob<
 					<programlisting language="java">import org.quartz.TriggerListener;
 					
 public class GlobalTriggerListener <emphasis role="bold">implements TriggerListener</emphasis> {
-    Log logger = LogFactory.getLog(GlobalTriggerListener.class);
+    Logger logger = LoggerFactory.getLogger(GlobalTriggerListener.class);
     String listenerType = "Non global";
 
     public void setListenerType(String listenerType) {
@@ -679,20 +609,20 @@ public class GlobalTriggerListener <emphasis role="bold">implements TriggerListe
     }
 
     public void <emphasis role="bold">triggerFired(Trigger trigger, JobExecutionContext ctx)</emphasis> {
-        logger.info("Scheduled " + trigger.getJobName() + " Fired!!");
+        logger.info("Scheduled {} Fired!!", trigger.getJobName());
     }
 
     public boolean <emphasis role="bold">vetoJobExecution(Trigger trigger, JobExecutionContext ctx)</emphasis> {
-        logger.info("Scheduled " + trigger.getJobName() + " Executed!!");
+        logger.info("Scheduled {} Executed!!", trigger.getJobName());
         return false;
     }
 
     public void <emphasis role="bold">triggerComplete(Trigger trigger, JobExecutionContext ctx, int arg)</emphasis> {
-        logger.info("Scheduled " + trigger.getJobName() + " Completed!!");
+        logger.info("Scheduled {} Completed!!", trigger.getJobName());
     }
 
     public void <emphasis role="bold">triggerMisfired(Trigger trigger)</emphasis> {
-        logger.error("Scheduled " + trigger.getJobName() + " Misfired!!");
+        logger.error("Scheduled {} Misfired!!", trigger.getJobName());
     }
 
     public String getName() {
@@ -717,43 +647,6 @@ public class GlobalTriggerListener <emphasis role="bold">implements TriggerListe
     </property>
     <property name="globalTriggerListeners" ref=]]><emphasis role="bold">"globalTriggerListener"</emphasis><![CDATA[ />
 </bean>]]></programlisting>
-				</listitem>
-				<listitem>
-					<para>
-						<emphasis role="bold">TestCase</emphasis>
-					</para>
-					<para>
-						다음은 앞서 정의한 속성 설정을 기반으로 하여 schedule를 실행하는 MonthlyMovieStatusServiceTest.java 코드의 일부이다.
-					</para>
-					<programlisting language="java">
-public void findMonthlyMovieStatusList() throws Exception {
-    Collection monthlyMovieStatusList = monthlyMovieStatusService.getList();
-
-    assertEquals("fail to fetch monthly movie status list", 10,
-               monthlyMovieStatusList.size());
-
-    Iterator itr = monthlyMovieStatusList.iterator();
-    while (itr.hasNext()) {
-        Map monthlyMovieStatus = (Map) itr.next();
-        if (monthlyMovieStatus.get("genreId").equals("GR-01")) {
-            assertEquals("fail to execute scheduling job", "0",
-                    monthlyMovieStatus.get("janCount").toString());
-        }
-    }
-
-    addNewMovie();
-    Thread.sleep(60000);
-
-    monthlyMovieStatusList = monthlyMovieStatusService.getList();
-    itr = monthlyMovieStatusList.iterator();
-    while (itr.hasNext()) {
-        Map monthlyMovieStatus = (Map) itr.next();
-        if (monthlyMovieStatus.get("genreId").equals("GR-01")) {
-            assertEquals("fail to execute scheduling job", "1",
-                    monthlyMovieStatus.get("janCount").toString());
-        }
-    }
-}</programlisting>
 				</listitem>
 			</itemizedlist>
 		</section>
