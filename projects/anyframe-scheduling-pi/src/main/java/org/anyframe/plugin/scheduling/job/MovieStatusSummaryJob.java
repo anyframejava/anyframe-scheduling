@@ -83,7 +83,7 @@ public class MovieStatusSummaryJob {
 
 			for (int j = 0; j < 12; j++) {
 				Calendar calendar = Calendar.getInstance();
-				calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR));
+				calendar.set(Calendar.YEAR, 2010);
 				calendar.set(Calendar.MONTH, j);
 
 				Collection results = queryService.find(

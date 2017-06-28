@@ -4,7 +4,7 @@
     <groupId>org.anyframe.plugin</groupId>
     <artifactId>anyframe-scheduling-pi</artifactId>
     <packaging>war</packaging>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <name>scheduling</name>
     <dependencies>
     	<!-- scheduling plugin dependencies START -->

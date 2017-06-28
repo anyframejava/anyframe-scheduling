@@ -23,14 +23,14 @@ import org.anyframe.sample.scheduling.task.executor.PrintTaskExecutor;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
- * Spring Scheduler를 테스트하기 위한 샘플 코드
+ * Sample code for testing Spring Scheduler 
  * 
  * [how to execute this class in maven] mvn exec:java
  * -Dexec.mainClass=anyframe.sample.scheduling.Main
  */
 public class Main {
 	/**
-	 * 테스트 수행을 위한 main
+	 * Main method for test execution 
 	 */
 	public static void main(String[] args) throws Exception {
 		Main main = new Main();

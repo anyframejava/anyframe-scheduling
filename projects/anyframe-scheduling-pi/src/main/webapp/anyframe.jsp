@@ -30,7 +30,7 @@
 		<tr class="board">
 				<td class="underline">
 					<!--scheduling-menu-START-->
-					<a href="${ctx}/schedulingMovieList.do"><font size="2">- Scheduling 1.0.1</font></a><br/>
+					<a href="${ctx}/schedulingMovieList.do"><font size="2">- Scheduling 1.0.2</font></a><br/>
 					<!--scheduling-menu-END-->
 					<!--Add new menu here-->
 				</td>

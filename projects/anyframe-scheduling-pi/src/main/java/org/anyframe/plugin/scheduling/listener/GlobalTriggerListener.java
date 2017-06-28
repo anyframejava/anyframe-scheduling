@@ -1,3 +1,18 @@
+/*
+ * Copyright 2008-2011 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.anyframe.plugin.scheduling.listener;
 
 import org.apache.commons.logging.Log;
@@ -6,6 +21,11 @@ import org.quartz.JobExecutionContext;
 import org.quartz.Trigger;
 import org.quartz.TriggerListener;
 
+/**
+ * This GlobalTriggerListener class is a trigger listener.
+ * 
+ * @author hyunjung jeong
+ */
 public class GlobalTriggerListener implements TriggerListener {
 	Log logger = LogFactory.getLog(GlobalTriggerListener.class);
 	String listenerType = "Non global";
@@ -15,21 +35,21 @@ public class GlobalTriggerListener implements TriggerListener {
 	}
 
 	public void triggerFired(Trigger trigger, JobExecutionContext ctx) {
-		logger.info("Scheduled " + trigger.getJobName() + " Fired!!");
+		logger.info("from "+ trigger.getName() + ") Scheduled " + trigger.getJobName() + " Fired!!");
 	}
 
 	public boolean vetoJobExecution(Trigger trigger, JobExecutionContext ctx) {
-		logger.info("Scheduled " + trigger.getJobName() + " Executed!!");
+		logger.info("from "+ trigger.getName() + ") Scheduled " + trigger.getJobName() + " Executed!!");
 		return false;
 	}
 
 	public void triggerComplete(Trigger trigger, JobExecutionContext ctx,
 			int arg) {
-		logger.info("Scheduled " + trigger.getJobName() + " Completed!!");
+		logger.info("from "+ trigger.getName() + ") Scheduled " + trigger.getJobName() + " Completed!!");
 	}
 
 	public void triggerMisfired(Trigger trigger) {
-		logger.error("Scheduled " + trigger.getJobName() + " Misfired!!");
+		logger.error("from "+ trigger.getName() + ") Scheduled " + trigger.getJobName() + " Misfired!!");
 	}
 
 	public String getName() {
