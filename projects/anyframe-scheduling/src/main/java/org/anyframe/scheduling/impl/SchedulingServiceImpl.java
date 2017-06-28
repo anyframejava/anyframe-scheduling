@@ -32,7 +32,6 @@ import org.anyframe.scheduling.SchedulingService;
 import org.anyframe.scheduling.exception.SchedulingException;
 import org.anyframe.scheduling.impl.listener.SchedulingJobListener;
 import org.anyframe.scheduling.impl.result.JobResultWriter;
-import org.anyframe.util.StringUtil;
 import org.quartz.CronTrigger;
 import org.quartz.Job;
 import org.quartz.JobDetail;
@@ -107,11 +106,11 @@ public class SchedulingServiceImpl implements SchedulingService,
 			schedulingJobListener.setJobResultWriter(jobResultWriter);
 		}
 
-		if ("database".equals(jobRepository)) {
+		if (jobRepository.equals("database")) {
 			this.jobDBManager = (JobDBManager) applicationContext
 					.getBean("jobDBManager");
 		} else {
-			LOGGER.debug("'jobRepository' values can be 'database' or 'file'.");
+			logger.debug("'jobRepository' values can be 'database' or 'file'.");
 		}
 
 		// 1. check scheduler is exist in context-scheduling.xml => make new
@@ -123,13 +122,13 @@ public class SchedulingServiceImpl implements SchedulingService,
 			scheduler.pauseAll();
 			addListenerToXMLJobs();
 		} catch (SchedulerException ex) {
-			LOGGER.error("Fail to init scheduler. Cause : " + ex.getCause());
+			logger.error("Fail to init scheduler. Cause : " + ex.getCause());
 			throw new InitializationException("Fail to init scheduler.", ex);
 		}
 
 		// 2. check db is exist => add jobs to scheduler
 		if (jobDBManager != null) {
-			LOGGER.debug("Job information is included in the DB. "
+			logger.debug("Job information is included in the DB. "
 					+ jobDBManager);
 			List<JobInfo> dbJobList = jobDBManager.getList();
 			Iterator<JobInfo> itrJob = dbJobList.iterator();
@@ -142,7 +141,7 @@ public class SchedulingServiceImpl implements SchedulingService,
 		try {
 			scheduler.resumeAll();
 		} catch (SchedulerException ex) {
-			LOGGER.error("Fail to resume all jobs.");
+			logger.error("Fail to resume all jobs.");
 			throw new InitializationException("Fail to resume all jobs.", ex);
 		}
 	}
@@ -153,10 +152,11 @@ public class SchedulingServiceImpl implements SchedulingService,
 
 		// 1. xml
 		// return job list to JobFilManager for compare, write
-		JobFileManager jobFileManagaer = new JobFileManager(jobList);
+		JobFileManager jobFileManagaer = new JobFileManager(jobList,
+				jobDBManager);
 		// refrect to XML Builder, remained Job List(reflect to DB) return
 		jobList = jobFileManagaer.reflectChanges();
-		LOGGER.debug("Job List to be saved in the DB size is " + jobList.size()
+		logger.debug("Job List to be saved in the DB size is " + jobList.size()
 				+ ".");
 
 		// 2. db
@@ -169,7 +169,7 @@ public class SchedulingServiceImpl implements SchedulingService,
 			scheduler.shutdown(true);
 			Thread.sleep(1000);
 		} catch (Exception ex) {
-			LOGGER.error("Fail to init scheduler. Cause : " + ex.getCause());
+			logger.error("Fail to init scheduler. Cause : " + ex.getCause());
 			throw new SchedulingException("Fail to shutdown quartz scheduler.",
 					ex);
 		}
@@ -185,7 +185,7 @@ public class SchedulingServiceImpl implements SchedulingService,
 	public void create(JobInfo jobInfo) {
 		String validateMessage = validateJobInfo(jobInfo);
 
-		if ("valid".equals(validateMessage)) {
+		if (validateMessage.equals("valid")) {
 			try {
 				addJob(jobInfo);
 			} catch (Exception ex) {
@@ -501,7 +501,7 @@ public class SchedulingServiceImpl implements SchedulingService,
 							jobInfo.getJobName(), jobInfo.getJobGroup())
 					.build();
 			return trigger;
-		} else if ("cron".equals(jobInfo.getFlagScheduleType())) {
+		} else if (jobInfo.getFlagScheduleType().equals("cron")) {
 			CronTrigger trigger = newTrigger().withIdentity(
 					"TRIGGER-" + jobInfo.getJobName(),
 					"TRIGGER-" + jobInfo.getJobGroup()).startAt(
@@ -511,7 +511,7 @@ public class SchedulingServiceImpl implements SchedulingService,
 					.build();
 			return trigger;
 		} else {
-			LOGGER
+			logger
 					.error("Fail to generate Trigger. Cause : Input schedule type is not invalid. Only \"cron\" or \"simple\".");
 			throw new InvalidPropertyException(
 					"Fail to generate Trigger. Cause : Input schedule type is not invalid. Only \"cron\" or \"simple\".");
@@ -547,7 +547,7 @@ public class SchedulingServiceImpl implements SchedulingService,
 	}
 
 	private boolean isEmpty(String parameter) {
-		if (StringUtil.isEmpty(parameter)) {
+		if (parameter == null || parameter.equals("")) {
 			return true;
 		} else {
 			return false;
@@ -555,7 +555,7 @@ public class SchedulingServiceImpl implements SchedulingService,
 	}
 
 	private SchedulingException processException(String actionName, Exception ex) {
-		LOGGER.error("Scheduling Service : " + actionName + " Reason : "
+		logger.error("Scheduling Service : " + actionName + " Reason : "
 				+ ex.getMessage());
 		return new SchedulingException("Scheduling Service : " + actionName
 				+ ".\n Reason = " + ex.getMessage(), ex);

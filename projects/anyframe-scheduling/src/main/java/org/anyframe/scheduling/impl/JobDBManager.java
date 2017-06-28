@@ -34,7 +34,7 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
  * 
  * @author Sujeong Lee
  */
-public class JobDBManager extends JdbcDaoSupport { 
+public class JobDBManager extends JdbcDaoSupport {
 
 	private static final String JOB_INFO_INSERT_QUERY = "INSERT INTO SCHEDULING_JOB      "
 			+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -55,7 +55,7 @@ public class JobDBManager extends JdbcDaoSupport {
 			+ "schedule, schedule_type, start_date, end_date, description     "
 			+ "FROM SCHEDULING_JOB      ";
 
-	private String datePattern = "yyyy-MM-dd HH:mm:ss.SSS";
+	private String full_date_pattern = "yyyy-MM-dd HH:mm:ss.SSS";
 
 	private String sqlJobInsert;
 	private String sqlJobUpdate;
@@ -86,7 +86,7 @@ public class JobDBManager extends JdbcDaoSupport {
 	 * @param pattern
 	 */
 	public void setDatePattern(String datePattern) {
-		this.datePattern = datePattern;
+		this.full_date_pattern = datePattern;
 	}
 
 	/**
@@ -95,7 +95,7 @@ public class JobDBManager extends JdbcDaoSupport {
 	 * @return
 	 */
 	public String getDatePattern() {
-		return this.datePattern;
+		return this.full_date_pattern;
 	}
 
 	/**
@@ -265,10 +265,10 @@ public class JobDBManager extends JdbcDaoSupport {
 								jobInfo.getJobSchedule(),
 								jobInfo.getFlagScheduleType(),
 								DateUtil.dateToString(jobInfo.getStartDate(),
-										datePattern),
+										full_date_pattern),
 								jobInfo.getEndDate() != null ? DateUtil
 										.dateToString(jobInfo.getEndDate(),
-												datePattern) : null,
+												full_date_pattern) : null,
 								jobInfo.getDescription() });
 	}
 
@@ -285,10 +285,10 @@ public class JobDBManager extends JdbcDaoSupport {
 								jobInfo.getJobSchedule(),
 								jobInfo.getFlagScheduleType(),
 								DateUtil.dateToString(jobInfo.getStartDate(),
-										datePattern),
+										full_date_pattern),
 								jobInfo.getEndDate() != null ? DateUtil
 										.dateToString(jobInfo.getEndDate(),
-												datePattern) : null,
+												full_date_pattern) : null,
 								jobInfo.getDescription(), jobInfo.getJobName(),
 								jobInfo.getJobGroup() });
 	}
@@ -329,11 +329,11 @@ public class JobDBManager extends JdbcDaoSupport {
 
 							jobInfo.setStartDate(DateUtil.stringToDate(
 									rs.getString("start_date"),
-									datePattern));
+									full_date_pattern));
 							if (rs.getString("end_date") != null) {
 								jobInfo.setEndDate(DateUtil.stringToDate(
 										rs.getString("end_date"),
-										datePattern));
+										full_date_pattern));
 							}
 
 							jobInfo.setDescription(rs.getString("description"));
