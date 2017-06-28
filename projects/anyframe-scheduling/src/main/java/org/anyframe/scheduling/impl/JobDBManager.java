@@ -207,28 +207,26 @@ public class JobDBManager extends JdbcDaoSupport {
 		List<JobInfo> updateList = new ArrayList<JobInfo>();
 		List<JobInfo> removeList = dbJobList;
 
-		Iterator<JobInfo> dbItr = dbJobList.iterator();
-		Iterator<JobInfo> memoryItr = jobList.iterator();
+		if (jobList != null && jobList.size() > 0) {
+			for (JobInfo memJobInfo : jobList) {
+				boolean isInMemoryExist = false;
 
-		while (memoryItr.hasNext()) {
-			boolean isInMemoryExist = false;
-			JobInfo memJobInfo = memoryItr.next();
-
-			while (dbItr.hasNext()) {
-				JobInfo dbJobInfo = dbItr.next();
-				if (isSameJob(dbJobInfo, memJobInfo)) {
-					// update
-					updateList.add(memJobInfo);
-					removeList.remove(dbJobInfo);
-					isInMemoryExist = true;
-					break;
+				if (dbJobList != null && dbJobList.size() > 0) {
+					for (JobInfo dbJobInfo : dbJobList) {
+						if (isSameJob(dbJobInfo, memJobInfo)) {
+							// update
+							updateList.add(memJobInfo);
+							removeList.remove(dbJobInfo);
+							isInMemoryExist = true;
+							break;
+						}
+					}
+				}
+				if (!isInMemoryExist) {
+					insertList.add(memJobInfo);
+					removeList.remove(memJobInfo);
 				}
 			}
-			if (!isInMemoryExist) {
-				insertList.add(memJobInfo);
-				removeList.remove(memJobInfo);
-			}
-
 		}
 
 		Iterator<JobInfo> insertItr = insertList.iterator();

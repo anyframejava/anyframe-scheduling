@@ -8,7 +8,7 @@
     <groupId>org.anyframe.plugin</groupId>
     <artifactId>anyframe-scheduling-pi</artifactId>
     <packaging>war</packaging>
-    <version>1.5.1</version>
+    <version>1.5.2</version>
     <name>scheduling</name>
     
     <dependencies>
@@ -16,7 +16,7 @@
     	<dependency>
             <groupId>org.anyframe</groupId>
             <artifactId>anyframe-scheduling</artifactId>
-            <version>1.5.1</version>
+            <version>1.5.2</version>
         </dependency>
         <dependency>
 			<groupId>opensymphony</groupId>
@@ -57,7 +57,7 @@
         <dependency>
             <groupId>org.anyframe</groupId>
             <artifactId>anyframe-core</artifactId>
-            <version>1.5.1</version>
+            <version>1.5.2</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
